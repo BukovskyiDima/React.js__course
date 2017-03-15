@@ -1,6 +1,3 @@
-console.log(React);
-console.log(ReactDOM);
-
 var my_news = [
     {
         author: 'Саша Печкин',
@@ -29,24 +26,18 @@ var Article = React.createClass({
     },
     getInitialState: function() {
         return {
-            visible: false,
-            rating: 0,
-            eshe_odno_svoistvo: 'qweqwe'
+            visible: false
         };
     },
     readmoreClick: function(e) {
         e.preventDefault();
-        this.setState({visible: true}, function() {
-            alert('Состояние изменилось');
-        });
+        this.setState({visible: true});
     },
     render: function() {
         var author = this.props.data.author,
             text = this.props.data.text,
             bigText = this.props.data.bigText,
             visible = this.state.visible;
-
-        console.log('render',this); //добавили console.log
 
         return (
             <div className='article'>
@@ -67,17 +58,11 @@ var News = React.createClass({
     propTypes: {
         data: React.PropTypes.array.isRequired
     },
-
-    getInitialState: function () {
-        return{
+    getInitialState: function() {
+        return {
             counter: 0
         }
     },
-
-    onTotalNewsClick: function() {
-        this.setState({counter: ++this.state.counter});
-    },
-
     render: function() {
         var data = this.props.data;
         var newsTemplate;
@@ -93,15 +78,43 @@ var News = React.createClass({
         } else {
             newsTemplate = <p>К сожалению новостей нет</p>
         }
-,
+
         return (
             <div className='news'>
                 {newsTemplate}
                 <strong
-                    className={'news__count ' + (data.length > 0 ? '':'none') }
-                    onClick={this.onTotalNewsClick()}>
-                    Всего новостей: {data.length}\
-                </strong>
+                    className={'news__count ' + (data.length > 0 ? '':'none') }>Всего новостей: {data.length}</strong>
+            </div>
+        );
+    }
+});
+
+// --- добавили test input ---
+var TestInput = React.createClass({
+
+    getInitialState: function() {
+        return {
+            myValue: ''
+        };
+    },
+
+    onChangeHandler: function(e) {
+        this.setState({myValue: e.target.value})
+    },
+
+    onBtnClickHandler: function() {
+        alert(this.state.myValue);
+    },
+
+    render: function() {
+        return (
+            <div>
+                <input className='test-input'
+                value={this.state.myValue}
+                onChange={this.onChangeHandler}
+                placeholder='введите значение'
+                />
+                <button onClick={this.onBtnClickHandler}>Показать alert</button>
             </div>
         );
     }
@@ -110,9 +123,10 @@ var News = React.createClass({
 var App = React.createClass({
     render: function() {
         return (
-            <div className="app">
+            <div className='app'>
                 <h3>Новости</h3>
-                <News data={my_news}/>
+                <TestInput /> {/* добавили вывод компонента */}
+                <News data={my_news} />
             </div>
         );
     }
